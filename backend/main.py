@@ -17,13 +17,22 @@ def root():
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
-    
     import pandas as pd
-    
-    df = pd.read_csv(file.file)
-    
-    
-    return{
-        "columns": df.columns.to_list(),
-        "rows": df.head(5).to_dict(orient="records")
-    }
+
+    try:
+        # 🔥 IMPORTANT: reset file pointer
+        file.file.seek(0)
+
+        df = pd.read_csv(file.file)
+
+        return {
+            "row_count": len(df),
+            "column_count": len(df.columns),
+            "columns": df.columns.tolist(),
+            "rows": df.head(5).to_dict(orient="records"),
+        }
+
+    except Exception as e:
+        return {
+            "error": str(e)
+        }
