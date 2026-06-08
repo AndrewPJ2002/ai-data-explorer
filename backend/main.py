@@ -17,7 +17,13 @@ def root():
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
+    
+    import pandas as pd
+    
+    df = pd.read_csv(file.file)
+    
+    
     return{
-        "filename": file.filename,
-        "message": "File received successfully!"
+        "columns": df.columns.to_list(),
+        "rows": df.head(5).to_dict(orient="records")
     }
