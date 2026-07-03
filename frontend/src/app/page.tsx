@@ -4,11 +4,12 @@ import { useState } from "react";
 
 import Header from "@/components/Header";
 import UploadCard from "@/components/UploadCard";
-import DatasetOverview from "@/components/DatasetOverview";
-import Histogram from "@/components/Histogram";
-import Statistics from "@/components/Statistics";
-import DataTable from "@/components/DataTable";
+
+
+import StatisticsGrid from "@/components/StatisticsGrid";
+
 import ThemeToggle from "@/components/ThemeToggle";
+import DashboardCards from "@/components/DashboardCards";
 
 import { DatasetResponse } from "@/types/data";
 
@@ -40,29 +41,18 @@ export default function Home() {
           setData={setData}
           theme={theme}
         />
-
         {data && (
-          <>
-            <DatasetOverview
-              data={data}
-              theme={theme}
+            <DashboardCards
+                data={data}
+                theme={theme}
             />
+        )}
 
-            <Histogram
-              data={data}
-              theme={theme}
+        {data?.statistics && (
+            <StatisticsGrid
+                data={data}
+                theme={theme}
             />
-
-            <Statistics
-              data={data}
-              theme={theme}
-            />
-
-            <DataTable
-              data={data}
-              theme={theme}
-            />
-          </>
         )}
       </div>
     </main>
