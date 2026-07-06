@@ -357,7 +357,7 @@ async def upload_file(file: UploadFile = File(...)):
 # AI CHAT
 # --------------------------------------------------
 
-@app.post("/ask")
+@app.post("/ask-ai")
 async def ask_ai(question: Question):
 
     global CURRENT_DF
@@ -455,7 +455,7 @@ Your job:
             "http://localhost:11434/api/generate",
 
             json={
-                "model": "qwen2.5:3b",
+                "model": "qwen2.5:0.5b",
                 "prompt": prompt,
                 "stream": False,
             },

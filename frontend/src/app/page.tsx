@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import AIChat from "@/components/AIchat";
+
 import Header from "@/components/Header";
 import UploadCard from "@/components/UploadCard";
 
@@ -17,6 +19,12 @@ export default function Home() {
   const [data, setData] = useState<DatasetResponse | null>(null);
 
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+
+  const [question, setQuestion] = useState("");
+
+  const [answer, setAnswer] = useState("");
+
+  const [loadingAI, setLoadingAI] = useState(false);
 
   return (
     <main
@@ -53,6 +61,18 @@ export default function Home() {
                 data={data}
                 theme={theme}
             />
+        )}
+
+        {data && (
+          <AIChat
+            theme={theme}
+            question={question}
+            setQuestion={setQuestion}
+            answer={answer}
+            setAnswer={setAnswer}
+            loading={loadingAI}
+            setLoading={setLoadingAI}
+          />
         )}
       </div>
     </main>
