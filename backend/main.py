@@ -353,7 +353,7 @@ async def upload_file(file: UploadFile = File(...)):
         return {
             "error": str(e)
         }
-        # --------------------------------------------------
+# --------------------------------------------------
 # AI CHAT
 # --------------------------------------------------
 
@@ -394,9 +394,33 @@ Standard Deviation: {col.std():.2f}
 """
 
     prompt = f"""
-You are a senior data scientist helping a user analyze a dataset.
+You are an expert senior data analyst.
 
-DATASET OVERVIEW
+Your job is to explain datasets to non-technical users.
+
+IMPORTANT:
+
+Respond in clean GitHub Markdown.
+
+Use headings with ##
+
+Use bullet points.
+
+Bold important numbers.
+
+Never use LaTeX.
+
+Never use mathematical notation.
+
+Never output \text, \t, \frac, $, curly braces, or code blocks.
+
+Never invent relationships.
+
+If the data does not support a conclusion, explicitly say so.
+
+Keep the response under 250 words.
+
+Dataset Summary
 
 Rows:
 {len(df)}
@@ -404,48 +428,20 @@ Rows:
 Columns:
 {", ".join(df.columns)}
 
-Column Types:
-{df.dtypes.to_string()}
-
 Missing Values:
 {df.isnull().sum().to_dict()}
 
-Summary Statistics:
+Statistics
 
 {statistics_text}
 
-First Ten Rows:
+First Five Rows
 
-{df.head(10).to_string()}
+{df.head().to_string()}
 
-=====================================================
-
-The user asked:
+User Question:
 
 {question.question}
-
-=====================================================
-
-Your job:
-
-• Answer using ONLY the information from the dataset.
-
-• If you don't know the answer, explain why.
-
-• Explain your reasoning.
-
-• Mention important trends.
-
-• Mention possible outliers.
-
-• Mention interesting relationships if appropriate.
-
-• Keep answers concise but insightful.
-
-• Use bullet points whenever appropriate.
-
-• Do NOT invent information.
-
 """
 
     try:
@@ -465,21 +461,31 @@ Your job:
         )
 
         result = response.json()
+        print(result)
+
+        answer = result.get(
+            "response",
+            "No response returned."
+        )
+
+        answer = (
+            answer
+            .replace("\\t", "")
+            .replace("\\text", "")
+            .replace("\\n", "\n")
+            .replace("{", "")
+            .replace("}", "")
+        )
 
         return {
-
-            "answer": result.get(
-                "response",
-                "No response returned."
-            )
-
+            "answer": answer.strip()
         }
 
     except Exception as e:
+        import traceback
+
+        print(traceback.format_exc())
 
         return {
-
-            "answer":
-            f"Error talking to Ollama: {str(e)}"
-
+            "answer": traceback.format_exc()
         }
