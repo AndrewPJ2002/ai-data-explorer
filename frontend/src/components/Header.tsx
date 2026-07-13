@@ -28,7 +28,7 @@ export default function Header({ theme }: HeaderProps) {
         </h1>
 
         <p className={`mt-4 max-w-2xl text-lg ${subText}`}>
-          Upload any CSV and instantly visualize,
+          Upload any CSV and instantly
           analyze, summarize, and chat with your data
           using AI.
         </p>

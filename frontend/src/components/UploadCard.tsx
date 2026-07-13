@@ -58,7 +58,7 @@ export default function UploadCard({
                 : "text-slate-600"
             }
           >
-            Drag and drop coming soon.
+            
           </p>
 
         </div>
